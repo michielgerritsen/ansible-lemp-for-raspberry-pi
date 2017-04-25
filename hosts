@@ -1,0 +1,4 @@
+[iot]
+192.168.178.33 ansible_ssh_user=pi
+192.168.178.36 ansible_ssh_user=pi
+192.168.178.93 ansible_ssh_user=pi
