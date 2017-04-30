@@ -1,0 +1,9 @@
+---
+- name: install nginx
+  become: yes
+  become_method: sudo
+  apt: name=nginx state=latest
+
+- name: Copy nginx file
+  template: src=default.conf dest=/etc/nginx/sites-enabled/default
+  notify: restart nginx

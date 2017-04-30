@@ -1,0 +1,64 @@
+---
+
+- name: Add repository source
+  apt_repository:
+    repo: deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free
+    state: present
+
+- name: execute apt-key update
+  command: apt-key update
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: gpg add key
+  shell: gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851
+
+- name: apt-key add
+  shell: gpg --armor --export CCD91D6111A06851 | sudo apt-key add -
+
+- name: execute apt-key update
+  shell: apt-get update
+
+- name: install php-fpm
+  apt: name={{ item }} state=present
+  with_items:
+    - mcrypt
+    - sqlite3
+    - php7.1-cli
+    - php7.1-curl
+    - php7.1-fpm
+    - php7.1-intl
+    - php7.1-json
+    - php7.1-mcrypt
+    - php7.1-dom
+    - php7.1-sqlite3
+    - php7.1-mbstring
+    - php7.1-mysql
+
+- name: ensure php7.1-fpm cgi.fix_pathinfo=0
+  lineinfile: dest=/etc/php/7.1/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  lineinfile: dest=/etc/php/7.1/cli/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  notify:
+    - restart php-fpm
+    - restart nginx
+
+- name: enable php7.1 mcrypt module
+  shell: phpenmod mcrypt
+  args:
+    creates: /etc/php/7.1/cli/conf.d/20-mcrypt.ini
+  notify: restart php-fpm
+
+- name: enable php7.1 dom module
+  shell: phpenmod dom
+  args:
+    creates: /etc/php/7.1/cli/conf.d/20-dom.ini
+  notify: restart php-fpm
+
+- name: enable php7.1 mbstring module
+  shell: phpenmod mbstring
+  args:
+    creates: /etc/php/7.1/cli/conf.d/20-mbstring.ini
+
+- name: Copy phpinfo file
+  template: src=phpinfo.php dest=/var/www/html/phpinfo.php

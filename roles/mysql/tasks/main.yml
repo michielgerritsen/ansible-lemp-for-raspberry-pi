@@ -1,0 +1,12 @@
+---
+- name: install mysql
+  become: yes
+  become_method: sudo
+  apt: name={{ item }} state=present
+  with_items:
+    - mysql-server
+    - mysql-client
+    - php7.1-mysql
+
+- name: Create the .my.cnf file
+  template: src=.my.cnf dest=/home/pi/.my.cnf

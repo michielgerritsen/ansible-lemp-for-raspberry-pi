@@ -1,0 +1,12 @@
+---
+- name: Install MySQL, Nginx, and PHP-FPM
+  hosts: all
+  remote_user: pi
+  become: yes
+  become_method: sudo
+
+  roles:
+    - common
+    - mysql
+    - nginx
+    - php-fpm
