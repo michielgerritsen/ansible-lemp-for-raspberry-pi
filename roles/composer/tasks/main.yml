@@ -1,0 +1,26 @@
+---
+- name: download composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /home/pi/composer-installer
+
+- name: install composer
+  shell: cat /home/pi/composer-installer | php -- --install-dir=/usr/local/bin
+  args:
+    creates: /usr/local/bin/composer
+
+- name: rename composer.phar to composer
+  shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer
+  args:
+    creates: /usr/local/bin/composer
+
+- name: make composer executable
+  file:
+    path: /usr/local/bin/composer
+    mode: a+x
+    state: file
+
+- name: delete composer installer
+  file:
+    path: /home/pi/composer-installer
+    state: absent

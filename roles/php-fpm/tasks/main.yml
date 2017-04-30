@@ -37,8 +37,10 @@
     - php7.1-mysql
 
 - name: ensure php7.1-fpm cgi.fix_pathinfo=0
-  lineinfile: dest=/etc/php/7.1/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
-  lineinfile: dest=/etc/php/7.1/cli/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  lineinfile: dest='{{item}}' regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  with_items:
+    - /etc/php/7.1/fpm/php.ini
+    - /etc/php/7.1/cli/php.ini
   notify:
     - restart php-fpm
     - restart nginx
@@ -59,6 +61,9 @@
   shell: phpenmod mbstring
   args:
     creates: /etc/php/7.1/cli/conf.d/20-mbstring.ini
+
+- name: Creates directory
+  file: path=/var/www/html state=directory
 
 - name: Copy phpinfo file
   template: src=phpinfo.php dest=/var/www/html/phpinfo.php

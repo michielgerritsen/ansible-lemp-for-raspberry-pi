@@ -23,19 +23,19 @@ And adds your public key(s). You can run a Laravel installation on your Raspberr
 
 # How to run
 
-*Change your hosts:*
+**Change your hosts:**
 
 Edit ``hosts``. Make sure to changed the IP-address and the hostname.
 
-*Change the Github profile:*
+**Change the Github profile:**
 
 Edit ``group_vars/all`` and change the used Github profile. Make sure you have added a public key to your Github account.
  
-*Execute the command:*
+**Execute the command:**
 
 ``ansible-playbook site.yml``
 
-*Warning: The first run*
+**Warning: The first run**
 
 If you did not yet added your SSH key, you should add ``--ask-pass`` to the command:
 
@@ -45,7 +45,7 @@ If you did not yet added your SSH key, you should add ``--ask-pass`` to the comm
 
 If all commands are completed, there is a ``phpinfo.php`` file created. You can check this by visiting ``http://your.host.ip.address/phpinfo.php``.
 
-*mysql*
+**mysql**
  
 The ``pi`` user has an ``.my.cnf`` file which logs you in automatically by running ``mysql`` from the command line. The default user is ``mysql``, without an password. Creating a database is as simple as:
  

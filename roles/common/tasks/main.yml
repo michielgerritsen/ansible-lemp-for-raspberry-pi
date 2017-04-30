@@ -1,4 +1,10 @@
 ---
+- name: Set authorized key took from url
+  authorized_key:
+    user: pi
+    state: present
+    key: "{{ github_profile }}.keys"
+
 - name: Change the hostname
   hostname:
     name: "{{ hostname }}"
@@ -7,14 +13,3 @@
   become: yes
   become_method: sudo
   apt: name=git update_cache=yes state=latest
-
-- name: install composer
-  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-  args:
-    creates: /usr/local/bin/composer
-
-- name: Set authorized key took from url
-  authorized_key:
-    user: pi
-    state: present
-    key: "{{ github_profile }}.keys"

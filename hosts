@@ -1,2 +1,2 @@
 [iot]
-192.168.178.33 ansible_ssh_user=pi hostname=meassurenew
+192.168.178.96 ansible_ssh_user=pi hostname=zerow1
