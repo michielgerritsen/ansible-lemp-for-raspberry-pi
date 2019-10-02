@@ -33,13 +33,13 @@ Edit ``group_vars/all`` and change the used Github profile. Make sure you have a
  
 **Execute the command:**
 
-``ansible-playbook site.yml``
+``ansible-playbook site.yml -i hosts``
 
 **Warning: The first run**
 
 If you did not yet added your SSH key, you should add ``--ask-pass`` to the command:
 
-``ansible-playbook site.yml --ask-pass``
+``ansible-playbook site.yml -i hosts --ask-pass``
 
 # Check if it all works
 

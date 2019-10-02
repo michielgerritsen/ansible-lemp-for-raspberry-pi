@@ -12,55 +12,53 @@
   apt: update_cache=yes
 
 - name: gpg add key
-  shell: gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851
-
-- name: apt-key add
-  shell: gpg --armor --export CCD91D6111A06851 | sudo apt-key add -
+  apt_key:
+    keyserver: pgpkeys.mit.edu
+    id: CCD91D6111A06851
 
 - name: execute apt-key update
   shell: apt-get update
 
 - name: install php-fpm
-  apt: name={{ item }} state=present
-  with_items:
-    - mcrypt
-    - sqlite3
-    - php7.1-cli
-    - php7.1-curl
-    - php7.1-fpm
-    - php7.1-intl
-    - php7.1-json
-    - php7.1-mcrypt
-    - php7.1-dom
-    - php7.1-sqlite3
-    - php7.1-mbstring
-    - php7.1-mysql
+  apt:
+    state: present
+    name:
+      - sqlite3
+      - php7.3-cli
+      - php7.3-curl
+      - php7.3-fpm
+      - php7.3-intl
+      - php7.3-json
+      - php7.3-dom
+      - php7.3-sqlite3
+      - php7.3-mbstring
+      - php7.3-mysql
 
-- name: ensure php7.1-fpm cgi.fix_pathinfo=0
+- name: ensure php7.3-fpm cgi.fix_pathinfo=0
   lineinfile: dest='{{item}}' regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
   with_items:
-    - /etc/php/7.1/fpm/php.ini
-    - /etc/php/7.1/cli/php.ini
+    - /etc/php/7.3/fpm/php.ini
+    - /etc/php/7.3/cli/php.ini
   notify:
     - restart php-fpm
     - restart nginx
 
-- name: enable php7.1 mcrypt module
+- name: enable php7.3 mcrypt module
   shell: phpenmod mcrypt
   args:
-    creates: /etc/php/7.1/cli/conf.d/20-mcrypt.ini
+    creates: /etc/php/7.3/cli/conf.d/20-mcrypt.ini
   notify: restart php-fpm
 
-- name: enable php7.1 dom module
+- name: enable php7.3 dom module
   shell: phpenmod dom
   args:
-    creates: /etc/php/7.1/cli/conf.d/20-dom.ini
+    creates: /etc/php/7.3/cli/conf.d/20-dom.ini
   notify: restart php-fpm
 
-- name: enable php7.1 mbstring module
+- name: enable php7.3 mbstring module
   shell: phpenmod mbstring
   args:
-    creates: /etc/php/7.1/cli/conf.d/20-mbstring.ini
+    creates: /etc/php/7.3/cli/conf.d/20-mbstring.ini
 
 - name: Creates directory
   file: path=/var/www/html state=directory
